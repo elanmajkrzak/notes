@@ -24,6 +24,11 @@ module.exports.define = sequelize => {
                 notEmpty: true
             }
         },
+        version: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 1,
+        }
     }, {
         indexes: [
             {
@@ -32,5 +37,10 @@ module.exports.define = sequelize => {
                 fields: ['userId', 'id']
             },
         ],
+        hooks: {
+            beforeUpdate: (note, option) => {
+                note.version = note.version + 1;
+            },
+        },
     });
 };

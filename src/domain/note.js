@@ -11,17 +11,24 @@ class Note {
         return this._note.id;
     }
 
+    get version() {
+        return this._note.version;
+    }
+
     expose() {
         return _.pick(this._note, [
             'id',
             'subject',
             'body',
+            'version',
             'updatedAt',
         ]);
     }
 
     update(note) {
-        return this._note.update(note);
+        return this._note.update(note, {
+            hooks: true
+        });
     }
 
     delete() {
