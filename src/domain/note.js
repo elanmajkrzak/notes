@@ -1,6 +1,9 @@
 'use strict';
 
 const _ = require('lodash');
+const q = require('q');
+const model = require('../model');
+const domain = require('../domain');
 
 class Note {
     constructor(note) {
@@ -25,6 +28,12 @@ class Note {
         ]);
     }
 
+    createNoteHistory(note) {
+        return this._note.createVersion(note).then(modelNoteHistory => {
+            return new domain.NoteHistory(modelNoteHistory);
+        });
+    }
+
     update(note) {
         return this._note.update(note, {
             hooks: true
@@ -33,6 +42,21 @@ class Note {
 
     delete() {
         return this._note.destroy();
+    }
+
+    static getById(id) {
+        return model.Note.findOne({
+            where: {
+                id
+            }
+        }).then(modelNote => {
+            if (!modelNote) {
+                return q.reject(new domain.Error(domain.Error.Code.NOTE_NOT_FOUND));
+            }
+            else {
+                return new Note(modelNote);
+            }
+        });
     }
 }
 
