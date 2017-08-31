@@ -21,7 +21,13 @@ class Note {
     }
 
     update(note) {
-        return this._note.update(note);
+        return this._note.update({
+            body: note.body
+        }, {
+            where: {noteId: note.id},
+            returning: true,
+            plain: true
+        });
     }
 
     delete() {
