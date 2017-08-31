@@ -52,6 +52,10 @@ function setupRoutesWithRequiredAuthentication(router) {
     );
 
     // NoteHistory
+    router.get(
+        '/noteHistory/:noteId',
+        route.noteHistory.list
+    );
     router.post(
         '/noteHistory',
         apiMiddleware.jsonParser,

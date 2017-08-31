@@ -39,8 +39,8 @@ describe('Tests for api router', function() {
         });
 
         it('should setup the router', function() {
-            router.get.callCount.should.equal(3);
-            router.post.callCount.should.equal(2);
+            router.get.callCount.should.equal(4);
+            router.post.callCount.should.equal(3);
             router.put.callCount.should.equal(1);
             router.delete.callCount.should.equal(2);
             router.use.callCount.should.equal(2);
@@ -94,6 +94,17 @@ describe('Tests for api router', function() {
             router.delete.calledWithExactly(
                 '/notes/:noteId',
                 route.note.delete
+            ).should.be.true();
+
+            // NoteHistory
+            router.get.calledWithExactly(
+                '/noteHistory/:noteId',
+                route.noteHistory.list
+            ).should.be.true();
+            router.post.calledWithExactly(
+                '/noteHistory',
+                apiMiddleware.jsonParser,
+                route.noteHistory.create
             ).should.be.true();
         });
     });

@@ -3,11 +3,24 @@
 <ol class="breadcrumb">
     <li><a href="#!/">List</a></li>
     <li class="active" ng-bind="$ctrl.note.subject"></li>
+    <li class="active">Version {{$ctrl.note.version}}</li>
 </ol>
 
-<p class="clearfix">
-    <a class="btn btn-default pull-right" ng-href="#!/notes/{{ $ctrl.note.id }}/edit">Edit</a>
-</p>
+<a class="btn btn-default" ng-href="#!/notes/{{ $ctrl.note.id }}/edit">Edit</a>
+<div ng-if="$ctrl.hasVersions" class="btn-group" uib-dropdown is-open="$ctrl.isopen">
+    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+        Previous Versions <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li ng-repeat="version in $ctrl.notehistory">
+            <a ng-click="$ctrl.loadVersion(version)" href>
+                <span class="glyphicon glyphicon-time" aria-hidden="true"></span> View version {{version.version}}
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li><a ng-href="#!/notes/{{ $ctrl.note.id }}">Latest Version</a></li>
+    </ul>
+</div>
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -17,4 +30,17 @@
     <div class="panel-body" style="white-space: pre-wrap;" ng-bind="$ctrl.note.body"></div>
 
     <div class="panel-footer" ng-bind="$ctrl.note.updatedAt | date:'medium'"></div>
+</div>
+
+<div ng-if="$ctrl.showHistory">
+    <a class="btn btn-default" ng-click="$ctrl.showHistory = false">Hide</a>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{$ctrl.historicalSubject}}</h3>
+        </div>
+
+        <div class="panel-body" style="white-space: pre-wrap;">{{$ctrl.historicalBody}}</div>
+
+        <div class="panel-footer">Version {{$ctrl.historicalVersion}}</div>
+    </div>
 </div>

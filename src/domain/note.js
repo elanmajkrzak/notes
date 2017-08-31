@@ -28,6 +28,16 @@ class Note {
         ]);
     }
 
+    noteHistory() {
+        return this._note.getVersions({
+            order: [['version', 'ASC']],
+        }).then(versions => {
+            return _.map(versions, noteHistory => {
+                return new domain.NoteHistory(noteHistory);
+            });
+        });
+    }
+
     createNoteHistory(note) {
         return this._note.createVersion(note).then(modelNoteHistory => {
             return new domain.NoteHistory(modelNoteHistory);
