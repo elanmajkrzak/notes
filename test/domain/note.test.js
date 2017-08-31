@@ -59,6 +59,20 @@ describe('Tests for domain Note', function() {
                     });
                 });
             });
+
+            it('should not update the subject of the note', () => {
+                return domainNote.update({
+                    body: 'newest body',
+                    subject: 'new subject'
+                }).then(() => {
+                    domainNote.expose().should.match({
+                        id: noteId,
+                        subject: 'some subject',
+                        body: 'newest body',
+                        updatedAt: _.isDate,
+                    });
+                });
+            });
         });
 
         describe('delete', () => {
