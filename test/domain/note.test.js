@@ -7,6 +7,7 @@ const model = require('../../src/model');
 
 describe('Tests for domain Note', function() {
     let noteId;
+    let noteVersion;
     let modelUser;
     let domainNote;
 
@@ -22,6 +23,7 @@ describe('Tests for domain Note', function() {
                     body: 'some body',
                 }).then(note => {
                     noteId = note.id;
+                    noteVersion = note.version;
                     domainNote = new domain.Note(note);
                 });
             });
@@ -33,14 +35,18 @@ describe('Tests for domain Note', function() {
             it('should get the id', () => {
                 domainNote.id.should.equal(noteId);
             });
+            it('should get the version', () => {
+                domainNote.version.should.equal(noteVersion);
+            });
         });
 
         describe('expose', () => {
-            it('should expose the id, subject, body and updatedAt of the note', () => {
+            it('should expose the id, subject, body, version, and updatedAt of the note', () => {
                 domainNote.expose().should.match({
                     id: noteId,
                     subject: 'some subject',
                     body: 'some body',
+                    version: noteVersion,
                     updatedAt: _.isDate,
                 });
             });
@@ -55,6 +61,7 @@ describe('Tests for domain Note', function() {
                         id: noteId,
                         subject: 'some subject',
                         body: 'new body',
+                        version: noteVersion + 1,
                         updatedAt: _.isDate,
                     });
                 });

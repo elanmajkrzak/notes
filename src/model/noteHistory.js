@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 
 module.exports.define = sequelize => {
-    return sequelize.define('Note', {
+    return sequelize.define('NoteHistory', {
         id: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -27,20 +27,14 @@ module.exports.define = sequelize => {
         version: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            defaultValue: 1,
         }
     }, {
         indexes: [
             {
-                name: 'Notes_user_id',
+                name: 'NotesHistory_notes_id',
                 unique: true,
-                fields: ['userId', 'id']
+                fields: ['noteId', 'id']
             },
         ],
-        hooks: {
-            beforeUpdate: (note, option) => {
-                note.version = note.version + 1;
-            },
-        },
     });
 };

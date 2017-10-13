@@ -5,12 +5,26 @@ angular.module('app').component('noteEdit', {
     bindings: {
         session: '<',
         note: '<',
+        notehistory: '@',
     },
-    controller: function(Note, $location) {
+    controller: function(Note, NoteHistory, $location) {
+        this.$onInit = function() {
+            this.notehistory = this.note.body;
+        };
+
         this.updateNote = function() {
             this.error = this._validate();
 
             if (!this.error) {
+                NoteHistory.save({
+                    id: this.note.id,
+                    note: {
+                        subject: this.note.subject,
+                        body: this.notehistory,
+                        version: this.note.version
+                    }
+                });
+
                 Note.update({
                     id: this.note.id
                 }, {

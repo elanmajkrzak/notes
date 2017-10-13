@@ -31,12 +31,15 @@ angular.module('app').config(function($routeProvider) {
     };
 
     const noteDetailPage = {
-        template: '<note-detail session="$resolve.session" note="$resolve.note"></note-detail>',
+        template: '<note-detail session="$resolve.session" note="$resolve.note" notehistory="$resolve.notehistory"></note-detail>',
         resolve: {
             session: Session => Session.current().$promise,
             note: (Note, $route) => Note.get({
                 id: $route.current.params.noteId
-            }).$promise
+            }).$promise,
+            notehistory: (NoteHistory, $route) => NoteHistory.query({
+                id: $route.current.params.noteId
+            }).$promise,
         }
     };
 
@@ -46,7 +49,7 @@ angular.module('app').config(function($routeProvider) {
             session: Session => Session.current().$promise,
             note: (Note, $route) => Note.get({
                 id: $route.current.params.noteId
-            }).$promise
+            }).$promise,
         }
     };
 
